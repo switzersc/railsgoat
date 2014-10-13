@@ -5,18 +5,19 @@ class ApplicationController < ActionController::Base
   # Our security guy keep talking about sea-surfing, cool story bro.
   # protect_from_forgery
 
+
+  def current_user
+    @current_user ||= (
+    User.find_by_auth_token(cookies[:auth_token].to_s) ||
+        User.where(id: session[:user_id].to_s).first
+    )
+  end
+
   private
 
   def mailer_options
     ActionMailer::Base.default_url_options[:protocol] = request.protocol
     ActionMailer::Base.default_url_options[:host]     = request.host_with_port
-  end
-
-  def current_user
-    @current_user ||= (
-      User.find_by_auth_token(cookies[:auth_token].to_s) ||
-      User.find_by_user_id(session[:user_id].to_s)
-    )
   end
 
   def authenticated

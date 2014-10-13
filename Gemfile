@@ -36,6 +36,7 @@ group :development, :test, :mysql do
   gem 'database_cleaner'
   gem 'poltergeist'
   gem 'rspec-rails', '2.14.2'
+  gem 'factory_girl_rails'
 end
 
 group :mysql do

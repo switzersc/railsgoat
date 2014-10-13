@@ -17,6 +17,7 @@ require 'database_cleaner'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
+  config.include AuthHelper, type: :controller
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
@@ -51,8 +52,11 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
+
+  config.before :suite do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
 end
 
 Capybara.javascript_driver = :poltergeist
-
-DatabaseCleaner.strategy = :truncation
